@@ -1,0 +1,2 @@
+version:0.1.0
+url:https://raw.githubusercontent.com/blind-coder/pz-bcUtils/master/latest_version.txt
