@@ -1,34 +1,37 @@
 require "ISUI/ISButton"
 
 if not bcUtils then bcUtils = {} end
-bcUtils.dump = function(o, lvl) -- {{{ Small function to dump an object.
-  if lvl == nil then lvl = 5 end
-  if lvl < 0 then return "SO ("..tostring(o)..")" end
+bcUtils.dump = function(o, lvl, ind) -- {{{ Small function to dump an object.
+	if lvl == nil then lvl = 5 end
+	if ind == nil then ind = 0 end
 
 	local x;
 	local pref = "";
-	for x=1,lvl do
+	for x=1,ind do
 		pref = pref .. " ";
 	end
 
-  if type(o) == 'table' then
-    local s = pref .. '{\n';
-    for k,v in pairs(o) do
-      if k == "prev" or k == "next" then
-        s = s .. pref .. '['..k..'] = '..tostring(v)..",\n";
-      else
-        if type(k) ~= 'number' then k = '"'..tostring(k)..'"' end
-        s = s .. pref .. '['..k..'] = ' .. bcUtils.dump(v, lvl - 1) .. ',\n'
-      end
-    end
-    return s .. pref .. '}\n'
-  else
-    return tostring(o)
-  end
+	if lvl < 0 then return pref .. "SO ("..tostring(o)..")" end
+
+	if type(o) == 'table' then
+		local s = '{\n';
+		for k,v in pairs(o) do
+			if k == "prev" or k == "next" then
+				s = s .. pref .. '['..k..'] = '..tostring(v)..",\n";
+			else
+				if type(k) ~= 'number' then k = '"'..tostring(k)..'"' end
+				s = s .. pref .. '['..k..'] = ' .. bcUtils.dump(v, lvl - 1, ind + 1) .. ',\n'
+			end
+		end
+		return s .. pref .. '},\n'
+	else
+		if type(o) == "string" then return '"'..tostring(o)..'"' end
+		return tostring(o)
+	end
 end
 -- }}}
 bcUtils.pline = function (text) -- {{{ Print text to logfile
-  print(tostring(text));
+	print(tostring(text));
 end
 -- }}}
 bcUtils.isStove = function(o) -- {{{ -- Check if an item is a stove
