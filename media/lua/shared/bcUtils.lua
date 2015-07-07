@@ -1,19 +1,27 @@
-bcUtils = {};
+require "ISUI/ISButton"
+
+if not bcUtils then bcUtils = {} end
 bcUtils.dump = function(o, lvl) -- {{{ Small function to dump an object.
   if lvl == nil then lvl = 5 end
   if lvl < 0 then return "SO ("..tostring(o)..")" end
 
+	local x;
+	local pref = "";
+	for x=1,lvl do
+		pref = pref .. " ";
+	end
+
   if type(o) == 'table' then
-    local s = '{\n'
+    local s = pref .. '{\n';
     for k,v in pairs(o) do
       if k == "prev" or k == "next" then
-        s = s .. '['..k..'] = '..tostring(v)..",\n";
+        s = s .. pref .. '['..k..'] = '..tostring(v)..",\n";
       else
         if type(k) ~= 'number' then k = '"'..tostring(k)..'"' end
-        s = s .. '['..k..'] = ' .. bcUtils.dump(v, lvl - 1) .. ',\n'
+        s = s .. pref .. '['..k..'] = ' .. bcUtils.dump(v, lvl - 1) .. ',\n'
       end
     end
-    return s .. '}\n'
+    return s .. pref .. '}\n'
   else
     return tostring(o)
   end
