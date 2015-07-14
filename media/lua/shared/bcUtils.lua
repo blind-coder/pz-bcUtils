@@ -23,7 +23,11 @@ bcUtils.dump = function(o, lvl, ind) -- {{{ Small function to dump an object.
 				s = s .. pref .. '['..k..'] = ' .. bcUtils.dump(v, lvl - 1, ind + 1) .. ',\n'
 			end
 		end
-		return s .. pref .. '},\n'
+		pref = "";
+		for x=2,ind do
+			pref = pref .. " ";
+		end
+		return s .. pref .. '}\n'
 	else
 		if type(o) == "string" then return '"'..tostring(o)..'"' end
 		return tostring(o)
