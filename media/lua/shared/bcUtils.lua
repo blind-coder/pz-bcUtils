@@ -98,7 +98,7 @@ bcUtils.tableIsEqual = function(tbl1, tbl2) -- {{{ check if two tables have iden
 	return true
 end
 -- }}}
-function bcUtils.cloneTable(orig) -- {{{ clone a table
+bcUtils.cloneTable = function(orig) -- {{{ clone a table
 	local orig_type = type(orig)
 	local copy
 	if orig_type == 'table' then
