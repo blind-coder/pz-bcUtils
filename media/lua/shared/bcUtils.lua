@@ -154,7 +154,7 @@ bcUtils.hasDirtRoad = function(o) -- {{{ check if a tile has a dirtroad on it
 end
 -- }}}
 bcUtils.realDist = function(x1, y1, x2, y2) -- {{{ check real distance between two tiles
-	return math.floor(math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)))
+	return math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2))
 end
 -- }}}
 bcUtils.split = function(string, sep) -- {{{ split a string, regex style
