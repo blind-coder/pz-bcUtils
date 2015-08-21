@@ -66,7 +66,7 @@ Example:
     table1 = { a = 1, b = 2, c = 3};
     table2 = { a = 1, b = 2, c = 3};
     table1 == table2 -- returns false, because these are two different tables
-    bcUtils.tableIsEmpty(table1, table2); -- returns true, because the tables have identical keys and these have identical values
+    bcUtils.tableIsEqual(table1, table2); -- returns true, because the tables have identical keys and these have identical values
 
 
 ### bcUtils.hasDirtRoad ###
