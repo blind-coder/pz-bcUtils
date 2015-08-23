@@ -165,3 +165,14 @@ bcUtils.split = function(string, sep) -- {{{ split a string, regex style
 	return fields
 end
 -- }}}
+
+bcUtils.numUses = function(item) -- {{{ returns number of uses in a Drainable
+	if not item then return 0 end
+	return mail.floor(1 / item:getUseDelta());
+end
+-- }}}
+bcUtils.numUsesLeft = function(item) -- {{{ returns remaining uses in a Drainable
+	if not item then return 0 end
+	return mail.floor(item:getUsedDelta() / item:getUseDelta());
+end
+-- }}}
