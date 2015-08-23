@@ -2,6 +2,29 @@
 
 This is a collection of helper functions useful for modding Project Zomboid.
 
+## Custom Classes ##
+### BCUGenericTA ###
+This is an extensible TimedAction that can be used to implement timed actions without having to implement an entire class for it. Simple things can be done using this action in very little code.  
+Example:
+
+    ta = BCUGenericTA(getPlayer(), 60); -- new TimedAction with current player and a duration of 60
+    ta:setIsValid(taIsValid, param1, param2, param3); -- before this TA is created, the function taIsValid is called with the parameters param1, param2 and param3. If this function does not return true, the TA is not created.
+    ta:setOnStart(taOnStart, param1); -- at the start of this TA, the function taOnStart is called with the parameter param1.
+    ta:setOnStop(taOnStop); -- if this TA is interrupted (not finished), the function taOnStop is called without parameters.
+    ta:setOnUpdate(taOnUpdate); -- Every updatetick, the function taOnUpdate is called without parameters.
+    ta:setOnPerform(taOnPerform, param1); -- When the TA finishes successfully, the function taOnPerform is called with parameter param1
+    ISTimedActionQueue.add(ta); -- add this TA to the queue and start it.
+
+Every set\* parameter can take a variable number of arguments, from 0 arguments to a - theoretically - infinite number of arguments. **ta:setOnStart(taOnStart);** is just as valid as **ta:setOnStart(taOnStart, param1, param2, param3, param4, param5, param6, param7, param8, param9);**.  
+The function set via the set\* function will have their **self** variable set to the TimedAction object, so this is valid:
+
+    function taOnUpdate()
+      self.counter = self.counter + 1;
+    end
+    ta = BCUGenericTA(getPlayer(), 60);
+    ta.counter = 0;
+    ta:setOnUpdate(taOnStart);
+
 ## Generic functions ##
 ### bcUtils.dump ###
 This funtion returns the contents of a variable or table in a human readable format useful for debugging.  
@@ -87,9 +110,9 @@ Example:
 
     objects = gridsquare:getObjects();
     for x=0,objects:size()-1 do
-	    if bcUtils.isContainer(objects:get(x)) then
-		    bcUtils.pline(bcUtils.dump(objects:get(x))); -- print a dump of the container object
-	    end
+      if bcUtils.isContainer(objects:get(x)) then
+        bcUtils.pline(bcUtils.dump(objects:get(x))); -- print a dump of the container object
+      end
     end
 
 ### bcUtils.isDirtRoad ###
@@ -97,9 +120,9 @@ This function checks if a worlditem is a dirtroad. The hasDirtRoad function uses
 
     objects = gridsquare:getObjects();
     for x=0,objects:size()-1 do
-	    if bcUtils.isDirtRoad(objects:get(x)) then
-		    bcUtils.pline(bcUtils.dump(objects:get(x))); -- print a dump of the dirtroad object
-	    end
+      if bcUtils.isDirtRoad(objects:get(x)) then
+        bcUtils.pline(bcUtils.dump(objects:get(x))); -- print a dump of the dirtroad object
+      end
     end
 
 ### bcUtils.isStreet ###
@@ -107,9 +130,9 @@ This function checks if a worlditem is a street. The hasStreet function uses thi
 
     objects = gridsquare:getObjects();
     for x=0,objects:size()-1 do
-	    if bcUtils.isStreet(objects:get(x)) then
-		    bcUtils.pline(bcUtils.dump(objects:get(x))); -- print a dump of the street object
-	    end
+      if bcUtils.isStreet(objects:get(x)) then
+        bcUtils.pline(bcUtils.dump(objects:get(x))); -- print a dump of the street object
+      end
     end
 
 ### bcUtils.isDoor ###
@@ -118,9 +141,9 @@ Example:
 
     objects = gridsquare:getObjects();
     for x=0,objects:size()-1 do
-	    if bcUtils.isDoor(objects:get(x)) then
-		    bcUtils.pline(bcUtils.dump(objects:get(x))); -- print a dump of the door object
-	    end
+      if bcUtils.isDoor(objects:get(x)) then
+        bcUtils.pline(bcUtils.dump(objects:get(x))); -- print a dump of the door object
+      end
     end
 
 ### bcUtils.isStove ###
@@ -129,9 +152,9 @@ Example:
 
     objects = gridsquare:getObjects();
     for x=0,objects:size()-1 do
-	    if bcUtils.isStove(objects:get(x)) then
-		    bcUtils.pline(bcUtils.dump(objects:get(x))); -- print a dump of the stove object
-	    end
+      if bcUtils.isStove(objects:get(x)) then
+        bcUtils.pline(bcUtils.dump(objects:get(x))); -- print a dump of the stove object
+      end
     end
 
 bcUtils.isWindow
@@ -140,9 +163,9 @@ Example:
 
     objects = gridsquare:getObjects();
     for x=0,objects:size()-1 do
-	    if bcUtils.isWindow(objects:get(x)) then
-		    bcUtils.pline(bcUtils.dump(objects:get(x))); -- print a dump of the window object
-	    end
+      if bcUtils.isWindow(objects:get(x)) then
+        bcUtils.pline(bcUtils.dump(objects:get(x))); -- print a dump of the window object
+      end
     end
 
 ### bcUtils.isTree ###
@@ -151,9 +174,9 @@ Example:
 
     objects = gridsquare:getObjects();
     for x=0,objects:size()-1 do
-	    if bcUtils.isTree(objects:get(x)) then
-		    bcUtils.pline(bcUtils.dump(objects:get(x))); -- print a dump of the tree object
-	    end
+      if bcUtils.isTree(objects:get(x)) then
+        bcUtils.pline(bcUtils.dump(objects:get(x))); -- print a dump of the tree object
+      end
     end
 
 ### bcUtils.realDist ###
@@ -161,7 +184,7 @@ This function returns the real, direct distance between two coordinates using th
 Example:
 
     if bcUtils.realDist(player:getX(), player:getY(), gridsquare:getX(), gridsquare:getY()) <= range then
-			-- do something
+      -- do something
     end
 
 ### bcUtils.split ###
@@ -178,4 +201,26 @@ Result:
      [3] = ghi,
      [4] = jkl,
     },
+
+### bcUtils.numUses ###
+This function returns the number of uses in a Drainable item, assuming a full item.
+Example:
+
+    local item = getPlayer():getInventory():FindAndReturn("Base.Twine");
+    bcUtils.pline(bcUtils.numUses(item));
+
+Result:
+
+    5
+
+### bcUtils.numUsesLeft ###
+This function returns the remaining uses in a specific Drainable item as specified by its current fill level.
+Example:
+
+    local item = getPlayer():getInventory():FindAndReturn("Base.Twine");
+    bcUtils.pline(bcUtils.numUsesLeft(item));
+
+Result:
+
+    3
 
