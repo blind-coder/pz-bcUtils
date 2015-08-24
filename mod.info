@@ -3,6 +3,6 @@ poster=empty.png
 description=A collection of functions blindcoder regularly uses in his mods.
 id=bcUtils
 
-modversion=1.1.0
+modversion=1.1.1
 pzversion=32.24
 versionurl=https://raw.githubusercontent.com/blind-coder/pz-bcUtils/master/mod.info
