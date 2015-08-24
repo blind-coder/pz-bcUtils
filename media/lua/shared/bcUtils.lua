@@ -168,11 +168,11 @@ end
 
 bcUtils.numUses = function(item) -- {{{ returns number of uses in a Drainable
 	if not item then return 0 end
-	return mail.floor(1 / item:getUseDelta());
+	return math.floor(1 / item:getUseDelta());
 end
 -- }}}
 bcUtils.numUsesLeft = function(item) -- {{{ returns remaining uses in a Drainable
 	if not item then return 0 end
-	return mail.floor(item:getUsedDelta() / item:getUseDelta());
+	return math.floor(item:getUsedDelta() / item:getUseDelta());
 end
 -- }}}
