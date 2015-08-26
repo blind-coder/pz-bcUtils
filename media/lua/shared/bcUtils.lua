@@ -1,4 +1,5 @@
 require "ISUI/ISButton"
+require "luautils"
 
 if not bcUtils then bcUtils = {} end
 bcUtils.dump = function(o, lvl, ind) -- {{{ Small function to dump an object.
