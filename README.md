@@ -224,3 +224,38 @@ Result:
 
     3
 
+### bcUtils.writeINI ###
+This functions write a Lua table into a file in ini style.  
+Example:
+
+    locat t = {};
+    t.main = {};
+    t.main.a = 123;
+    t.main.b = "abc";
+    t.secondary = {};
+    t.secondary.a = 1000;
+    t.secondary.b = "Hello world!";
+    bcUtils.writeINI("test.ini", t);
+
+The resulting file Zomboid/Lua/test.ini looks like this:
+
+    [main]
+    a=123
+    b=abc
+    [secondary]
+    a=1000
+    b=Hello world!
+
+Note that this isn't really 100% INI style, but close enough to be usable.
+
+### bcUtils.readINI ###
+This functions reads an ini style file and returns its content as a Lua table.  
+Example (reading the file created above):
+
+    local t = bcUtils.readINI("test.ini");
+    t.main.a == "123"; -- true
+    t.main.b == "abc"; -- true
+    t.secondary.a == "1000"; -- true
+    t.secondary.b == "Hello world!"; -- true
+
+Note that all read values are returned as integers. No implicit number conversion is done.
