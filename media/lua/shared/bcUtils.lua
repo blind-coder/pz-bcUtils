@@ -166,6 +166,42 @@ bcUtils.split = function(string, sep) -- {{{ split a string, regex style
 	return fields
 end
 -- }}}
+bcUtils.readINI = function(filename)--{{{
+	local retVal = {};
+	local f = getFileReader(filename, false);
+	if not f then return retVal end;
+
+	local line = "1";
+	local currentCat = "unknown";
+
+	while line do
+		line = f:readLine();
+		if line then
+			if luautils.stringStarts(line, "[") then
+				currentCat = string.match(line, "[%a]+");
+			else
+				local kv = bcUtils.split(line, "=");
+				if not retVal[currentCat] then retVal[currentCat] = {}; end
+				retVal[currentCat][kv[1]] = kv[2];
+			end
+		end
+	end
+	return retVal;
+end
+--}}}
+bcUtils.writeINI = function(filename, content)--{{{
+	local f = getFileWriter(filename, true, false); -- create if not exist, do not append but overwrite
+	if not f then return false end;
+
+	for catID,catVal in pairs(content) do
+		f:write("["..catID.."]\n");
+		for k,v in pairs(catVal) do
+			f:write(tostring(k).."="..tostring(v).."\n");
+		end
+	end
+	f:close();
+end
+--}}}
 
 bcUtils.numUses = function(item) -- {{{ returns number of uses in a Drainable
 	if not item then return 0 end
