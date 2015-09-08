@@ -157,7 +157,7 @@ Example:
       end
     end
 
-bcUtils.isWindow
+### bcUtils.isWindow ###
 This function checks if a worlditem is a window.  
 Example:
 
@@ -258,4 +258,4 @@ Example (reading the file created above):
     t.secondary.a == "1000"; -- true
     t.secondary.b == "Hello world!"; -- true
 
-Note that all read values are returned as integers. No implicit number conversion is done.
+Note that all read values are returned as strings. No implicit number conversion is done.
