@@ -178,28 +178,47 @@ bcUtils.readINI = function(filename)--{{{
 		line = f:readLine();
 		if line then
 			if luautils.stringStarts(line, "[") then
-				currentCat = string.match(line, "[%a]+");
+				currentCat = string.match(line, "[%a.]+");
 			else
 				local kv = bcUtils.split(line, "=");
-				if not retVal[currentCat] then retVal[currentCat] = {}; end
-				retVal[currentCat][kv[1]] = kv[2];
+				local rvptr = retVal;
+				for _,cat in pairs(bcUtils.split(currentCat, ".")) do
+					if not rvptr[cat] then rvptr[cat] = {} end
+					rvptr = rvptr[cat]
+				end
+				-- if not retVal[currentCat] then retVal[currentCat] = {}; end
+				rvptr[kv[1]] = kv[2];
 			end
 		end
 	end
 	return retVal;
 end
 --}}}
-bcUtils.writeINI = function(filename, content)--{{{
-	local f = getFileWriter(filename, true, false); -- create if not exist, do not append but overwrite
-	if not f then return false end;
-
-	for catID,catVal in pairs(content) do
-		f:write("["..catID.."]\n");
+bcUtils.writeINItable = function(fd, table, category)--{{{
+	for catID,catVal in pairs(table) do
+		if category then
+			category = category.."."..catID;
+		else
+			category = catID;
+		end
+		fd:write("["..category.."]\n");
 		for k,v in pairs(catVal) do
-			f:write(tostring(k).."="..tostring(v).."\n");
+			if type(v) == "table" then
+				local a = {};
+				a[k] = v;
+				bcUtils.writeINItable(fd, a, category);
+			else
+				fd:write(tostring(k).."="..tostring(v).."\n");
+			end
 		end
 	end
-	f:close();
+end
+--}}}
+bcUtils.writeINI = function(filename, content)--{{{
+	local fd = getFileWriter(filename, true, false); -- create if not exist, do not append but overwrite
+	if not fd then return false end;
+	bcUtils.writeINItable(fd, content);
+	fd:close();
 end
 --}}}
 
