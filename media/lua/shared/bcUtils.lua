@@ -168,6 +168,7 @@ end
 -- }}}
 bcUtils.readINI = function(filename)--{{{
 	local retVal = {};
+	local rvptr = retVal;
 	local f = getFileReader(filename, false);
 	if not f then return retVal end;
 
@@ -178,15 +179,14 @@ bcUtils.readINI = function(filename)--{{{
 		line = f:readLine();
 		if line then
 			if luautils.stringStarts(line, "[") then
-				currentCat = string.match(line, "[%a.]+");
+				currentCat = string.match(line, "[a-zA-Z0-9/]+");
+				rvptr = retVal;
+				for _,cat in ipairs(bcUtils.split(currentCat, "/")) do
+					if not rvptr[cat] then rvptr[cat] = {} end
+					rvptr = rvptr[cat];
+				end
 			else
 				local kv = bcUtils.split(line, "=");
-				local rvptr = retVal;
-				for _,cat in pairs(bcUtils.split(currentCat, ".")) do
-					if not rvptr[cat] then rvptr[cat] = {} end
-					rvptr = rvptr[cat]
-				end
-				-- if not retVal[currentCat] then retVal[currentCat] = {}; end
 				rvptr[kv[1]] = kv[2];
 			end
 		end
@@ -197,7 +197,7 @@ end
 bcUtils.writeINItable = function(fd, table, category)--{{{
 	for catID,catVal in pairs(table) do
 		if category then
-			category = category.."."..catID;
+			category = category.."/"..catID;
 		else
 			category = catID;
 		end
