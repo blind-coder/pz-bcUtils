@@ -194,10 +194,11 @@ bcUtils.readINI = function(filename)--{{{
 	return retVal;
 end
 --}}}
-bcUtils.writeINItable = function(fd, table, category)--{{{
+bcUtils.writeINItable = function(fd, table, parentCategory)--{{{
+	local category;
 	for catID,catVal in pairs(table) do
-		if category then
-			category = category.."/"..catID;
+		if parentCategory then
+			category = parentCategory.."/"..catID;
 		else
 			category = catID;
 		end
