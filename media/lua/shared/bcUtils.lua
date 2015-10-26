@@ -232,3 +232,52 @@ bcUtils.numUsesLeft = function(item) -- {{{ returns remaining uses in a Drainabl
 	return math.floor(item:getUsedDelta() / item:getUseDelta());
 end
 -- }}}
+
+bcUtils.serTableWrite = function(fd, table, category)--{{{
+	for catID,catVal in pairs(table) do
+		if type(catID) == "number" then
+			fd:write("["..catID.."]={");
+		else
+			fd:write("[\""..catID.."\"]={");
+		end
+		for k,v in pairs(catVal) do -- {{{
+			if type(v) == "table" then
+				local a = {};
+				a[k] = v;
+				bcUtils.serTableWrite(fd, a, category);
+			else
+				if type(k) == "number" then
+					fd:write("["..k.."]=");
+				else
+					fd:write("[\""..k.."\"]=");
+				end
+				if type(v) == "string" then
+					fd:write("\""..tostring(v).."\"");
+				else
+					fd:write(tostring(v));
+				end
+				fd:write(",");
+			end
+		end
+		-- }}}
+		fd:write("},");
+	end
+end
+--}}}
+bcUtils.serTable = function(filename, content)--{{{
+	local fd = getFileWriter(filename, true, false); -- create if not exist, do not append but overwrite
+	if not fd then return false end;
+	fd:write("return {");
+	bcUtils.serTableWrite(fd, content);
+	fd:write("};");
+	fd:close();
+end
+--}}}
+
+bcUtils.deSerTable = function(filename)
+	local f = getFileReader(filename, false);
+	if not f then return retVal end;
+	local ftables = f:readLine();
+	local retVal = eval(ftables);
+	return retVal;
+end
