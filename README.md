@@ -23,7 +23,7 @@ The function set via the set\* function will have their **self** variable set to
     end
     ta = BCUGenericTA(getPlayer(), 60);
     ta.counter = 0;
-    ta:setOnUpdate(taOnStart);
+    ta:setOnUpdate(taOnUpdate);
 
 ## Generic functions ##
 ### bcUtils.dump ###
