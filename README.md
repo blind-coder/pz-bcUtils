@@ -21,7 +21,7 @@ The function set via the set\* function will have their **self** variable set to
     function taOnUpdate()
       self.counter = self.counter + 1;
     end
-    ta = BCUGenericTA(getPlayer(), 60);
+    ta = BCUGenericTA:new(getPlayer(), 60);
     ta.counter = 0;
     ta:setOnUpdate(taOnUpdate);
 
