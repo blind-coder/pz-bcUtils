@@ -7,7 +7,7 @@ This is a collection of helper functions useful for modding Project Zomboid.
 This is an extensible TimedAction that can be used to implement timed actions without having to implement an entire class for it. Simple things can be done using this action in very little code.  
 Example:
 
-    ta = BCUGenericTA(getPlayer(), 60); -- new TimedAction with current player and a duration of 60
+    ta = BCUGenericTA:new(getPlayer(), 60); -- new TimedAction with current player and a duration of 60
     ta:setIsValid(taIsValid, param1, param2, param3); -- before this TA is created, the function taIsValid is called with the parameters param1, param2 and param3. If this function does not return true, the TA is not created.
     ta:setOnStart(taOnStart, param1); -- at the start of this TA, the function taOnStart is called with the parameter param1.
     ta:setOnStop(taOnStop); -- if this TA is interrupted (not finished), the function taOnStop is called without parameters.
