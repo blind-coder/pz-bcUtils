@@ -228,7 +228,7 @@ Result:
 This functions write a Lua table into a file in ini style.  
 Example:
 
-    locat t = {};
+    local t = {};
     t.main = {};
     t.main.a = 123;
     t.main.b = "abc";
