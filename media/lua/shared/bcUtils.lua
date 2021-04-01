@@ -1,4 +1,3 @@
-require "ISUI/ISButton"
 require "luautils"
 
 if not bcUtils then bcUtils = {} end
@@ -28,7 +27,7 @@ bcUtils.dump = function(o, lvl, ind) -- {{{ Small function to dump an object.
 		for x=2,ind do
 			pref = pref .. " ";
 		end
-		return s .. pref .. '}\n'
+		return s .. pref .. '}\n' -- TODO Maybe remove the \n here?
 	else
 		if type(o) == "string" then return '"'..tostring(o)..'"' end
 		return tostring(o)
@@ -166,6 +165,34 @@ bcUtils.split = function(string, sep) -- {{{ split a string, regex style
 	return fields
 end
 -- }}}
+bcUtils.readModINI = function(mod, filename)--{{{
+	local retVal = {};
+	local rvptr = retVal;
+	local f = getModFileReader(mod, filename, false);
+	if not f then return retVal end;
+
+	local line = "1";
+	local currentCat = "unknown";
+
+	while line do
+		line = f:readLine();
+		if line then
+			if luautils.stringStarts(line, "[") then
+				currentCat = string.match(line, "[a-zA-Z0-9/ \.]+");
+				rvptr = retVal;
+				for _,cat in ipairs(bcUtils.split(currentCat, "/")) do
+					if not rvptr[cat] then rvptr[cat] = {} end
+					rvptr = rvptr[cat];
+				end
+			else
+				local kv = bcUtils.split(line, "=");
+				rvptr[kv[1]] = kv[2];
+			end
+		end
+	end
+	return retVal;
+end
+--}}}
 bcUtils.readINI = function(filename)--{{{
 	local retVal = {};
 	local rvptr = retVal;
@@ -179,7 +206,7 @@ bcUtils.readINI = function(filename)--{{{
 		line = f:readLine();
 		if line then
 			if luautils.stringStarts(line, "[") then
-				currentCat = string.match(line, "[a-zA-Z0-9/]+");
+				currentCat = string.match(line, "[a-zA-Z0-9/ \.]+");
 				rvptr = retVal;
 				for _,cat in ipairs(bcUtils.split(currentCat, "/")) do
 					if not rvptr[cat] then rvptr[cat] = {} end
