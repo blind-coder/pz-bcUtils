@@ -7,11 +7,10 @@ description= <ORANGE> https://github.com/blind-coder/pz-bcUtils/blob/master/READ
 author=Benjamin 'blindCoder' Schieder
 url=https://github.com/blind-coder/pz-bcUtils/
 versionMin=32.24
-versionMax=42.99
 poster=poster.png
 icon=poster.png
 category=utility
-modversion=1.2.2
 
+modversion=1.2.2
 pzversion=32.24
 versionurl=https://raw.githubusercontent.com/blind-coder/pz-bcUtils/master/mod.info
