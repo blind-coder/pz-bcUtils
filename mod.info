@@ -1,8 +1,17 @@
-name=blindcoders utility functions.
-poster=empty.png
-description=A collection of functions blindcoder regularly uses in his mods.
+name=blindcoders Modding Utility
 id=bcUtils
+description=This mod does not provide any in-game functionality itself, but is a collection of functions that are useful for modders. <LINE> 
+description=For a list of function and how to use them, check this site on github: <LINE> 
+description= <LINE> 
+description= <ORANGE> https://github.com/blind-coder/pz-bcUtils/blob/master/README.md </ORANGE> 
+author=Benjamin 'blindCoder' Schieder
+url=https://github.com/blind-coder/pz-bcUtils/
+versionMin=32.24
+versionMax=42.99
+poster=poster.png
+icon=poster.png
+category=utility
+modversion=1.2.1
 
-modversion=1.2.0
 pzversion=32.24
 versionurl=https://raw.githubusercontent.com/blind-coder/pz-bcUtils/master/mod.info
