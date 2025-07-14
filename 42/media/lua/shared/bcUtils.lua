@@ -206,7 +206,7 @@ bcUtils.readINI = function(filename)--{{{
 		line = f:readLine();
 		if line then
 			if luautils.stringStarts(line, "[") then
-				currentCat = string.match(line, "[a-zA-Z0-9/ \.]+");
+				currentCat = string.match(line, "[a-zA-Z0-9/ \.\\]+");
 				rvptr = retVal;
 				for _,cat in ipairs(bcUtils.split(currentCat, "/")) do
 					if not rvptr[cat] then rvptr[cat] = {} end
